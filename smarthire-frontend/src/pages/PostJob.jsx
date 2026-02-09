@@ -1,49 +1,119 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../api/axiosInstance";
+import { useJobs } from "../context/JobsContext";
+import "../styles/theme.css";
 
 export default function PostJob() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
   const navigate = useNavigate();
+  const { addJob } = useJobs();
 
-  const submitJob = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      await axios.post("/jobs", { title, description, location });
-      navigate("/recruiter/manage-jobs");
-    } catch {
-      setError("Failed to post job");
-    } finally {
-      setLoading(false);
-    }
+  const submitJob = (e) => {
+    e.preventDefault();
+    addJob({ title, description, location });
+    navigate("/recruiter");
   };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Post Job</h2>
+      <header style={header}>
+        <h1 style={pageTitle}>Post a Job</h1>
+        <p style={subtitle}>Create a new job listing.</p>
+      </header>
 
-      <input className="w-full mb-3 border p-2"
-        placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
+      <form style={formCard} onSubmit={submitJob}>
+        <div style={inputGroup}>
+          <label style={label}>Job Title</label>
+          <input
+            style={input}
+            placeholder="e.g. Senior Frontend Developer"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
 
-      <textarea className="w-full mb-3 border p-2"
-        placeholder="Description" onChange={(e) => setDescription(e.target.value)} />
+        <div style={inputGroup}>
+          <label style={label}>Description</label>
+          <textarea
+            style={textarea}
+            placeholder="Describe the role, responsibilities, and requirements..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            required
+          />
+        </div>
 
-      <input className="w-full mb-3 border p-2"
-        placeholder="Location" onChange={(e) => setLocation(e.target.value)} />
+        <div style={inputGroup}>
+          <label style={label}>Location</label>
+          <input
+            style={input}
+            placeholder="e.g. Bengaluru, Remote"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+          />
+        </div>
 
-      <button onClick={submitJob}
-        className="bg-blue-600 text-white px-4 py-2">
-        Submit
-      </button>
+        <button type="submit" style={primaryBtn}>Post Job</button>
+      </form>
     </div>
   );
 }
+
+const header = { marginBottom: "40px" };
+const pageTitle = { fontSize: "32px", fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.5px", marginBottom: "8px" };
+const subtitle = { fontSize: "17px", color: "var(--text-secondary)" };
+
+const formCard = {
+  background: "var(--card-bg)",
+  padding: "32px",
+  borderRadius: "16px",
+  border: "1px solid var(--border)",
+  maxWidth: "560px",
+  boxShadow: "var(--card-shadow)",
+};
+
+const inputGroup = { marginBottom: "24px" };
+const label = { display: "block", fontSize: "13px", fontWeight: 500, color: "var(--text-primary)", marginBottom: "8px" };
+
+const input = {
+  width: "100%",
+  padding: "12px 14px",
+  borderRadius: "10px",
+  border: "1px solid var(--border-strong)",
+  background: "var(--bg-primary)",
+  color: "var(--text-primary)",
+  fontSize: "15px",
+  outline: "none",
+  boxSizing: "border-box",
+};
+
+const textarea = {
+  width: "100%",
+  padding: "12px 14px",
+  borderRadius: "10px",
+  border: "1px solid var(--border-strong)",
+  background: "var(--bg-primary)",
+  color: "var(--text-primary)",
+  fontSize: "15px",
+  outline: "none",
+  boxSizing: "border-box",
+  resize: "vertical",
+  minHeight: "100px",
+  fontFamily: "inherit",
+};
+
+const primaryBtn = {
+  padding: "12px 28px",
+  background: "var(--accent)",
+  color: "#fff",
+  border: "none",
+  borderRadius: "980px",
+  fontSize: "15px",
+  fontWeight: 500,
+  cursor: "pointer",
+};

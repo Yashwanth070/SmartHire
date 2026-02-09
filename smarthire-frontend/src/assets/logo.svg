@@ -1,34 +1,31 @@
-<svg
-  width="36"
-  height="36"
-  viewBox="0 0 36 36"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#3B82F6"/>
-      <stop offset="100%" stop-color="#1E40AF"/>
+    <!-- Gradient for depth and material feel -->
+    <linearGradient id="arrowGradient" x1="20" y1="4" x2="20" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00a1ff"/>
+      <stop offset="100%" stop-color="#0051d4"/>
     </linearGradient>
+    <!-- Subtle shadow/glow effect -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-
-  <!-- Left drop -->
-  <path
-    d="M12 6
-       C8.7 9.6 6 12.8 6 17
-       C6 21.4 9.6 25 14 25
-       C18.4 25 22 21.4 22 17
-       C22 12.8 19.3 9.6 16 6Z"
-    fill="url(#g)"
+  
+  <!-- Smooth rounded arrow/chevron pointing up -->
+  <path 
+    d="M8 28C8 28 20 10 20 10C20 10 32 28 32 28" 
+    stroke="url(#arrowGradient)" 
+    stroke-width="5" 
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+    filter="url(#glow)"
   />
-
-  <!-- Right drop -->
-  <path
-    d="M24 11
-       C20.7 14.6 18 17.8 18 22
-       C18 26.4 21.6 30 26 30
-       C30.4 30 34 26.4 34 22
-       C34 17.8 31.3 14.6 28 11Z"
-    fill="url(#g)"
-  />
+  
+  <!-- Floating dot below for anti-gravity effect -->
+  <circle cx="20" cy="35" r="2.5" fill="url(#arrowGradient)" opacity="0.7"/>
 </svg>
